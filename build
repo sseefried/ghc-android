@@ -194,6 +194,7 @@ EOF
     perl boot
     ./configure --prefix="$GHC_STAGE0_PREFIX"
     make $MAKEFLAGS
+    make $MAKEFLAGS install || true  # first time fails, for unknown reason
     make $MAKEFLAGS install
     popd > /dev/null
 fi
