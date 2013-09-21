@@ -20,6 +20,8 @@ fi
 NDK_RELEASE=${NDK_RELEASE:-r8e}
 NDK_MD5=26d774b0884bcd98de08eb4de41ab532
 NDK_PLATFORM=${NDK_PLATFORM:-android-14}
+# A version of GHC that successfully builds for Android
+GHC_SNAPSHOT=da11bb138c7a1b4f056fb90ce026f11b18b5ca2c
 
 if [ "x$1" == "x--x86" ] ; then
     NDK_TOOLCHAIN=${NDK_TOOLCHAIN:-x86-4.7}
@@ -176,6 +178,9 @@ if ! [ -e "$GHC_STAGE0" ] ; then
     apply_patches 'ghc-fix-sync-all.patch' "$GHC_STAGE0_SRC"
     pushd "$GHC_STAGE0_SRC" > /dev/null
     ./sync-all --no-dph get $MIRROR_OPT
+    git checkout sync-all
+    git checkout $GHC_SNAPSHOT
+    git submodule update
 
     # Setup build.mk
     cat > mk/build.mk <<EOF
@@ -196,9 +201,15 @@ fi
 if ! [ -d "$GHC_SRC" ] ; then
     # Checkout GHC
     git clone $MIRROR_OPT http://darcs.haskell.org/ghc.git/ "$GHC_SRC"
-    apply_patches 'ghc-*' "$GHC_SRC"
+    apply_patches 'ghc-fix-sync-all.patch' "$GHC_SRC"
     pushd "$GHC_SRC" > /dev/null
     ./sync-all --no-dph get $MIRROR_OPT
+    git checkout sync-all
+    git checkout $GHC_SNAPSHOT
+    git submodule update
+    popd
+    apply_patches 'ghc-*' "$GHC_SRC"
+    pushd "$GHC_SRC" > /dev/null
 
     # Setup build.mk
     cat > mk/build.mk <<EOF
