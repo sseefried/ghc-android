@@ -172,7 +172,47 @@ if ! [ -e "$NDK_ADDON_PREFIX/lib/libgmp.a" ] ; then
     popd > /dev/null
 fi
 
+# Build and install some libraries that are not needed to build ghc,
+# but are used by cabal packages: libgnutls libxml2 libidn gsasl
+pushd $NDK_ADDON_SRC
+rm -rf libxml2* nettle* gnutls26* libidn* gsasl*
+apt-get source gnutls26 libxml2 nettle libidn gsasl
+pushd gsasl*
+./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
+make $MAKEFLAGS || true
+make install
+popd
+pushd libidn*
+./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
+make $MAKEFLAGS || true
+make install
+popd
+pushd libxml2*
+cp -v "$CONFIG_SUB_SRC/config.sub" .
+cp -v "$CONFIG_SUB_SRC/config.guess" .
+patch -p0 < ../../patches/libxml2-no-tests.patch
+./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
+make $MAKEFLAGS || true
+make install
+popd
+pushd nettle*
+cp -v "$CONFIG_SUB_SRC/config.sub" .
+cp -v "$CONFIG_SUB_SRC/config.guess" .
+./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
+make $MAKEFLAGS
+make install
+popd
+pushd gnutls26*
+./configure --without-p11-kit --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH CC="arm-linux-androideabi-gcc -fgnu89-inline" --enable-static --disable-shared
+pushd lib
+make $MAKEFLAGS
+make install
+popd
+popd
+popd
+
 if ! [ -e "$GHC_STAGE0" ] ; then
+	if [ ! -d "$GHC_STAGE0_SRC" ]; then
     # Checkout GHC
     git clone $MIRROR_OPT http://darcs.haskell.org/ghc.git/ "$GHC_STAGE0_SRC"
     apply_patches 'ghc-fix-sync-all.patch' "$GHC_STAGE0_SRC"
@@ -189,6 +229,9 @@ BUILD_DOCBOOK_HTML = NO
 BUILD_DOCBOOK_PS   = NO
 BUILD_DOCBOOK_PDF  = NO
 EOF
+	else
+    pushd "$GHC_STAGE0_SRC" > /dev/null
+	fi
 
     # Configure
     perl boot
