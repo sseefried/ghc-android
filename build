@@ -28,7 +28,7 @@ if [ "x$1" == "x--x86" ] ; then
     NDK_TARGET=${NDK_TARGET:-i686-linux-android}
     ARCH_OPTS=""
 else
-    NDK_TOOLCHAIN=${NDK_TOOLCHAIN:-arm-linux-androideabi-4.7}
+    NDK_TOOLCHAIN=${NDK_TOOLCHAIN:-arm-linux-androideabi-4.8}
     NDK_TARGET=${NDK_TARGET:-arm-linux-androideabi}
     ARCH_OPTS="-fllvm"
 fi
