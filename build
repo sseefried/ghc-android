@@ -201,6 +201,7 @@ make $MAKEFLAGS
 make install
 popd
 pushd gnutls26*
+patch -p1 <../patches/gnutls-no-atfork.patch
 ./configure --without-p11-kit --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH CC="arm-linux-androideabi-gcc -fgnu89-inline" --enable-static --disable-shared
 pushd lib
 make $MAKEFLAGS
