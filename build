@@ -176,7 +176,7 @@ pushd $NDK_ADDON_SRC
 rm -rf libxml2* nettle* gnutls26* libidn* gsasl*
 apt-get source gnutls26 libxml2 nettle libidn gsasl
 pushd gsasl*
-patch -p1 <$(BASEDIR)/patches/gsasl-avoid-memxor-conflict.patch
+patch -p1 <$BASEDIR/patches/gsasl-avoid-memxor-conflict.patch
 ./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
 make $MAKEFLAGS || true
 make install
@@ -189,7 +189,7 @@ popd
 pushd libxml2*
 cp -v "$CONFIG_SUB_SRC/config.sub" .
 cp -v "$CONFIG_SUB_SRC/config.guess" .
-patch -p0 < $(BASEDIR)/patches/libxml2-no-tests.patch
+patch -p0 < $BASEDIR/patches/libxml2-no-tests.patch
 ./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
 make $MAKEFLAGS || true
 make install
