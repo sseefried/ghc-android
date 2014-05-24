@@ -13,91 +13,91 @@ diff --git a/System/Posix/Terminal/Common.hsc b/System/Posix/Terminal/Common.hsc
 index 5d718a8..2e793a0 100644
 --- a/System/Posix/Terminal/Common.hsc
 +++ b/System/Posix/Terminal/Common.hsc
-@@ -342,14 +342,14 @@ inputSpeed termios = unsafePerformIO $ do
+@@ -332,14 +332,14 @@
      w <- c_cfgetispeed p
      return (word2Baud w)
  
--foreign import ccall unsafe "cfgetispeed"
-+foreign import ccall unsafe "__hsunix_cfgetispeed"
+-foreign import capi unsafe "termios.h cfgetispeed"
++foreign import capi unsafe "__hsunix_cfgetispeed"
    c_cfgetispeed :: Ptr CTermios -> IO CSpeed
  
  withInputSpeed :: TerminalAttributes -> BaudRate -> TerminalAttributes
  withInputSpeed termios br = unsafePerformIO $ do
    withNewTermios termios $ \p -> c_cfsetispeed p (baud2Word br)
  
--foreign import ccall unsafe "cfsetispeed"
-+foreign import ccall unsafe "__hsunix_cfsetispeed"
+-foreign import capi unsafe "termios.h cfsetispeed"
++foreign import capi unsafe "__hsunix_cfsetispeed"
    c_cfsetispeed :: Ptr CTermios -> CSpeed -> IO CInt
  
  
-@@ -359,14 +359,14 @@ outputSpeed termios = unsafePerformIO $ do
+@@ -349,14 +349,14 @@
      w <- c_cfgetospeed p
      return (word2Baud w)
  
--foreign import ccall unsafe "cfgetospeed"
-+foreign import ccall unsafe "__hsunix_cfgetospeed"
+-foreign import capi unsafe "termios.h cfgetospeed"
++foreign import capi unsafe "__hsunix_cfgetospeed"
    c_cfgetospeed :: Ptr CTermios -> IO CSpeed
  
  withOutputSpeed :: TerminalAttributes -> BaudRate -> TerminalAttributes
  withOutputSpeed termios br = unsafePerformIO $ do
    withNewTermios termios $ \p -> c_cfsetospeed p (baud2Word br)
  
--foreign import ccall unsafe "cfsetospeed"
-+foreign import ccall unsafe "__hsunix_cfsetospeed"
+-foreign import capi unsafe "termios.h cfsetospeed"
++foreign import capi unsafe "__hsunix_cfsetospeed"
    c_cfsetospeed :: Ptr CTermios -> CSpeed -> IO CInt
  
  -- | @getTerminalAttributes fd@ calls @tcgetattr@ to obtain
-@@ -378,7 +378,7 @@ getTerminalAttributes (Fd fd) = do
+@@ -368,7 +368,7 @@
        throwErrnoIfMinus1_ "getTerminalAttributes" (c_tcgetattr fd p)
    return $ makeTerminalAttributes fp
  
--foreign import ccall unsafe "tcgetattr"
-+foreign import ccall unsafe "__hsunix_tcgetattr"
+-foreign import capi unsafe "termios.h tcgetattr"
++foreign import capi unsafe "__hsunix_tcgetattr"
    c_tcgetattr :: CInt -> Ptr CTermios -> IO CInt
  
  data TerminalState
-@@ -403,7 +403,7 @@ setTerminalAttributes (Fd fd) termios state = do
+@@ -393,7 +393,7 @@
      state2Int WhenDrained = (#const TCSADRAIN)
      state2Int WhenFlushed = (#const TCSAFLUSH)
  
--foreign import ccall unsafe "tcsetattr"
-+foreign import ccall unsafe "__hsunix_tcsetattr"
+-foreign import capi unsafe "termios.h tcsetattr"
++foreign import capi unsafe "__hsunix_tcsetattr"
     c_tcsetattr :: CInt -> CInt -> Ptr CTermios -> IO CInt
  
  -- | @sendBreak fd duration@ calls @tcsendbreak@ to transmit a
-@@ -413,7 +413,7 @@ sendBreak :: Fd -> Int -> IO ()
+@@ -403,7 +403,7 @@
  sendBreak (Fd fd) duration
    = throwErrnoIfMinus1_ "sendBreak" (c_tcsendbreak fd (fromIntegral duration))
  
--foreign import ccall unsafe "tcsendbreak"
-+foreign import ccall unsafe "__hsunix_tcsendbreak"
+-foreign import capi unsafe "termios.h tcsendbreak"
++foreign import capi unsafe "__hsunix_tcsendbreak"
    c_tcsendbreak :: CInt -> CInt -> IO CInt
  
  -- | @drainOutput fd@ calls @tcdrain@ to block until all output
-@@ -421,7 +421,7 @@ foreign import ccall unsafe "tcsendbreak"
+@@ -411,7 +411,7 @@
  drainOutput :: Fd -> IO ()
  drainOutput (Fd fd) = throwErrnoIfMinus1_ "drainOutput" (c_tcdrain fd)
  
--foreign import ccall unsafe "tcdrain"
-+foreign import ccall unsafe "__hsunix_tcdrain"
+-foreign import capi unsafe "termios.h tcdrain"
++foreign import capi unsafe "__hsunix_tcdrain"
    c_tcdrain :: CInt -> IO CInt
  
  
-@@ -442,7 +442,7 @@ discardData (Fd fd) queue =
+@@ -432,7 +432,7 @@
      queue2Int OutputQueue = (#const TCOFLUSH)
      queue2Int BothQueues  = (#const TCIOFLUSH)
  
--foreign import ccall unsafe "tcflush"
-+foreign import ccall unsafe "__hsunix_tcflush"
+-foreign import capi unsafe "termios.h tcflush"
++foreign import capi unsafe "__hsunix_tcflush"
    c_tcflush :: CInt -> CInt -> IO CInt
  
  data FlowAction
-@@ -464,7 +464,7 @@ controlFlow (Fd fd) action =
+@@ -454,7 +454,7 @@
      action2Int TransmitStop  = (#const TCIOFF)
      action2Int TransmitStart = (#const TCION)
  
--foreign import ccall unsafe "tcflow"
-+foreign import ccall unsafe "__hsunix_tcflow"
+-foreign import capi unsafe "termios.h tcflow"
++foreign import capi unsafe "__hsunix_tcflow"
    c_tcflow :: CInt -> CInt -> IO CInt
  
  -- | @getTerminalProcessGroupID fd@ calls @tcgetpgrp@ to
