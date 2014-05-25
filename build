@@ -3,7 +3,7 @@
 set -e
 
 [ -e /etc/makepkg.conf ] && source /etc/makepkg.conf
-MAKEFLAGS=${MAKEFLAGS:--j6}
+MAKEFLAGS=${MAKEFLAGS:-}
 
 # Basic configuration
 GHCHOME=$HOME/.ghc
