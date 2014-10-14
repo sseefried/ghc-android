@@ -81,7 +81,7 @@ Running these commands will make a Debian jessie chroot and build in there.
 	apt-get -y install llvm-3.4
 	apt-get -y install ca-certificates curl file m4 autoconf zlib1g-dev
 	apt-get -y install libgnutls-dev libxml2-dev libgsasl7-dev pkg-config
-	apt-get -y install python c2hs happy alex
+	apt-get -y install python c2hs happy alex automake
 
 	rm *.deb
 	adduser androidbuilder
