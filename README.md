@@ -67,34 +67,28 @@ Linux install and are known to work:
 
 Comments, patches and success reports are welcome.
 
-## tested working build with Debian stable
+## tested working build with Debian jessie
 
-Running these commands will make a Debian stable chroot and build in there.
+Running these commands will make a Debian jessie chroot and build in there.
 
-	debootstrap --arch=i386 stable debian-stable-android
-	chroot debian-stable-android
+	debootstrap --arch=i386 stable debian-jessie-android
+	chroot debian-jessie-android
 
 	mount -t proc proc /proc
-	echo "deb-src http://ftp.us.debian.org/debian stable main" >> /etc/apt/sources.list
+	echo "deb-src http://ftp.us.debian.org/debian jessie main" >> /etc/apt/sources.list
 	apt-get update
 	apt-get -y install build-essential ghc git libncurses5-dev cabal-install
-	apt-get -y install llvm-3.0 # not 3.1; buggy on arm. 3.2 is ok too
+	apt-get -y install llvm-3.4
 	apt-get -y install ca-certificates curl file m4 autoconf zlib1g-dev
 	apt-get -y install libgnutls-dev libxml2-dev libgsasl7-dev pkg-config
-	apt-get -y install python c2hs
-	wget http://snapshot.debian.org/archive/debian/20130903T155330Z/pool/main/a/automake-1.14/automake_1.14-1_all.deb
-	dpkg -i automake*.deb
+	apt-get -y install python c2hs happy alex
+
 	rm *.deb
 	adduser androidbuilder
 	su androidbuilder
-	
 	cd
-	rm -rf .ghc .cabal
-	cabal update
-	cabal install happy alex --bindir=$HOME/bin
-	PATH=$HOME/bin:$PATH
-	export PATH
+
 	git clone https://github.com/joeyh/ghc-android
 	cd ghc-android
-	git checkout stable-ghc-snapshot
+	git checkout jessie-ghc-snapshot
 	./build

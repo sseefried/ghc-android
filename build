@@ -174,7 +174,7 @@ fi
 # but are used by cabal packages: libgnutls libxml2 libidn gsasl
 pushd $NDK_ADDON_SRC
 rm -rf libxml2* nettle* gnutls26* libidn* gsasl*
-apt-get source gnutls26 libxml2 nettle libidn gsasl
+apt-get source gnutls28 libxml2 nettle libidn gsasl
 pushd gsasl*
 patch -p1 <$BASEDIR/patches/gsasl-avoid-memxor-conflict.patch
 ./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
@@ -189,7 +189,7 @@ popd
 pushd libxml2*
 cp -v "$CONFIG_SUB_SRC/config.sub" .
 cp -v "$CONFIG_SUB_SRC/config.guess" .
-patch -p0 < $BASEDIR/patches/libxml2-no-tests.patch
+patch -p1 < $BASEDIR/patches/libxml2-no-tests.patch
 ./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
 make $MAKEFLAGS || true
 make install
@@ -201,8 +201,7 @@ cp -v "$CONFIG_SUB_SRC/config.guess" .
 make $MAKEFLAGS
 make install
 popd
-pushd gnutls26*
-patch -p1 <$BASEDIR/patches/gnutls-no-atfork.patch
+pushd gnutls28*
 ./configure --without-p11-kit --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH CC="arm-linux-androideabi-gcc -fgnu89-inline" --enable-static --disable-shared
 pushd lib
 make $MAKEFLAGS

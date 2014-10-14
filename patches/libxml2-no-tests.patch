@@ -1,6 +1,17 @@
---- Makefile.in.orig	2013-09-22 19:05:54.181977000 +0100
-+++ Makefile.in	2013-09-22 19:06:12.293977000 +0100
-@@ -37,14 +37,6 @@
+From 747f1249d253354f3a6d791bb37ebdf8af8c00db Mon Sep 17 00:00:00 2001
+From: Joey Hess <joey@kitenet.net>
+Date: Tue, 14 Oct 2014 19:02:18 -0400
+Subject: [PATCH] foo
+
+---
+ Makefile.in | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index bde07d3..1f8bbc6 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -54,14 +54,6 @@ PRE_UNINSTALL = :
  POST_UNINSTALL = :
  build_triplet = @build@
  host_triplet = @host@
@@ -10,7 +21,7 @@
 -	testAutomata$(EXEEXT) testRegexp$(EXEEXT) testReader$(EXEEXT) \
 -	testapi$(EXEEXT) testModule$(EXEEXT) runtest$(EXEEXT) \
 -	runsuite$(EXEEXT) testchar$(EXEEXT) testdict$(EXEEXT) \
--	runxmlconf$(EXEEXT) testrecurse$(EXEEXT)
+-	runxmlconf$(EXEEXT) testrecurse$(EXEEXT) testlimits$(EXEEXT)
 -bin_PROGRAMS = xmllint$(EXEEXT) xmlcatalog$(EXEEXT)
  subdir = .
  DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
