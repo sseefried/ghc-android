@@ -190,7 +190,7 @@ pushd libxml2*
 cp -v "$CONFIG_SUB_SRC/config.sub" .
 cp -v "$CONFIG_SUB_SRC/config.guess" .
 patch -p1 < $BASEDIR/patches/libxml2-no-tests.patch
-./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared --with-included-libtasn1
+./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
 make $MAKEFLAGS || true
 make install
 popd
@@ -203,7 +203,7 @@ make install
 popd
 pushd gnutls26*
 patch -p1 <$BASEDIR/patches/gnutls-no-atfork.patch
-./configure --without-p11-kit --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH CC="arm-linux-androideabi-gcc -fgnu89-inline" --enable-static --disable-shared
+./configure --without-p11-kit --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH CC="arm-linux-androideabi-gcc -fgnu89-inline" --enable-static --disable-shared --with-included-libtasn1
 pushd lib
 make $MAKEFLAGS
 make install
