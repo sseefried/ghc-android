@@ -1,14 +1,14 @@
-From 747f1249d253354f3a6d791bb37ebdf8af8c00db Mon Sep 17 00:00:00 2001
+From 64ba518377ec2ca135cb3db555daf1fd90d9432b Mon Sep 17 00:00:00 2001
 From: Joey Hess <joey@kitenet.net>
 Date: Tue, 14 Oct 2014 19:02:18 -0400
-Subject: [PATCH] foo
+Subject: [PATCH] disable tests and python bindings
 
 ---
- Makefile.in | 8 --------
- 1 file changed, 8 deletions(-)
+ Makefile.in | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
 diff --git a/Makefile.in b/Makefile.in
-index bde07d3..1f8bbc6 100644
+index bde07d3..7bc7d66 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -54,14 +54,6 @@ PRE_UNINSTALL = :
@@ -26,3 +26,17 @@ index bde07d3..1f8bbc6 100644
  subdir = .
  DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
  	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
+@@ -611,8 +603,8 @@ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ ACLOCAL_AMFLAGS = -I m4
+-SUBDIRS = include . doc example xstc $(PYTHON_SUBDIR)
+-DIST_SUBDIRS = include . doc example python xstc
++SUBDIRS = include . doc example xstc
++DIST_SUBDIRS = include . doc example xstc
+ AM_CPPFLAGS = -I$(top_builddir)/include -I$(srcdir)/include
+ AM_CFLAGS = $(THREAD_CFLAGS) $(Z_CFLAGS) $(LZMA_CFLAGS)
+ bin_SCRIPTS = xml2-config
+-- 
+2.1.1
+
