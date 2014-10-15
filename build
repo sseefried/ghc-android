@@ -135,6 +135,11 @@ if ! [ -e "$NDK_ADDON_PREFIX/lib/libiconv.a" ] ; then
 
     pushd $ICONV_SRC > /dev/null
     ./configure --prefix="$NDK_ADDON_PREFIX" --host=$NDK_TARGET --build=$BUILD_ARCH --with-build-cc=$BUILD_GCC --enable-static --disable-shared
+    # For some reason this often hangs the first time, with make
+    # stuck with several zombie processes, and never doing anything.
+    timeout 10m make $MAKEFLAGS || true
+    timeout 10m make $MAKEFLAGS || true
+    timeout 10m make $MAKEFLAGS || true
     make $MAKEFLAGS
     make install
     popd > /dev/null
