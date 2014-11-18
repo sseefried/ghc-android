@@ -40,7 +40,7 @@ GHC_STAGE0_SRC="$BASEDIR/stage0"
 GHC_STAGE0_PREFIX="$GHCHOME/android-host"
 GHC_STAGE0="$GHC_STAGE0_PREFIX/bin/ghc"
 
-GHC_PREFIX="$NDK"
+GHC_PREFIX="$NDK/sysroot/usr"
 GHC_SRC="$NDK_ADDON_SRC/ghc"
 
 # GHC tarball
@@ -250,8 +250,8 @@ fi
 
 if ! [ -d "$GHC_SRC" ] ; then
     # Checkout GHC
-    tar xf ghc-7.8.2-src.tar.bz2
-    mv ghc-7.8.2 "$GHC_SRC"
+    tar xf $GHC_TAR_PATH
+    mv ghc-${GHC_RELEASE} "$GHC_SRC"
     apply_patches 'ghc-*' "$GHC_SRC"
     pushd "$GHC_SRC" > /dev/null
 
