@@ -3,7 +3,7 @@
 set -e
 
 [ -e /etc/makepkg.conf ] && source /etc/makepkg.conf
-MAKEFLAGS=${MAKEFLAGS:--j6}
+MAKEFLAGS=${MAKEFLAGS:--j9}
 
 # Basic configuration
 GHCHOME=$HOME/.ghc
@@ -224,7 +224,7 @@ if ! [ -e "$GHC_STAGE0" ] ; then
         curl -o "$GHC_TAR_PATH" https://www.haskell.org/ghc/dist/${GHC_RELEASE}/${GHC_TAR_FILE}
         check_md5 "$GHC_TAR_PATH" "$GHC_MD5"
       fi
-      tar xf ${GHC_TAR_FILE}
+      tar xf ${GHC_TAR_PATH}
       mv ghc-${GHC_RELEASE} "$GHC_STAGE0_SRC"
       pushd "$GHC_STAGE0_SRC" > /dev/null
 
@@ -250,7 +250,7 @@ fi
 
 if ! [ -d "$GHC_SRC" ] ; then
     # Checkout GHC
-    tar xf $GHC_TAR_PATH
+    tar xf ${GHC_TAR_PATH}
     mv ghc-${GHC_RELEASE} "$GHC_SRC"
     apply_patches 'ghc-*' "$GHC_SRC"
     pushd "$GHC_SRC" > /dev/null
