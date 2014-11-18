@@ -224,7 +224,7 @@ if ! [ -e "$GHC_STAGE0" ] ; then
         curl -o "$GHC_TAR_PATH" https://www.haskell.org/ghc/dist/${GHC_RELEASE}/${GHC_TAR_FILE}
         check_md5 "$GHC_TAR_PATH" "$GHC_MD5"
       fi
-      tar xf ${GHC_TARFILE}
+      tar xf ${GHC_TAR_FILE}
       mv ghc-${GHC_RELEASE} "$GHC_STAGE0_SRC"
       pushd "$GHC_STAGE0_SRC" > /dev/null
 
