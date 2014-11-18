@@ -215,13 +215,13 @@ popd
 popd
 popd
 
-GHC_TAR_FILE=ghc-${GHC_RELEASE}.tar.xz
+GHC_TAR_FILE=ghc-${GHC_RELEASE}-src.tar.xz
 GHC_TAR_PATH="${TARDIR}/${GHC_TAR_FILE}"
 if ! [ -e "$GHC_STAGE0" ] ; then
 	if [ ! -d "$GHC_STAGE0_SRC" ]; then
       if ! check_md5 "$GHC_TAR_PATH" "$GHC_MD5" ; then
         echo "Downloading GHC $GHC_RELEASE"
-        curl -o "$GHC_TAR_PATH" http://www.haskell.org/ghc/dist/${GHC_RELEASE}/${GHC_TAR_FILE}
+        curl -o "$GHC_TAR_PATH" https://www.haskell.org/ghc/dist/${GHC_RELEASE}/${GHC_TAR_FILE}
         check_md5 "$GHC_TAR_PATH" "$GHC_MD5"
       fi
       tar xf ${GHC_TARFILE}
