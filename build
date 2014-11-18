@@ -43,6 +43,10 @@ GHC_STAGE0="$GHC_STAGE0_PREFIX/bin/ghc"
 GHC_PREFIX="$NDK"
 GHC_SRC="$NDK_ADDON_SRC/ghc"
 
+# GHC tarball
+GHC_RELEASE=7.8.3
+GHC_MD5=5e34b2a29564596c9ed83fb8667b47d4
+
 NCURSES_RELEASE=5.9
 NCURSES_MD5=8cb9c412e5f2d96bc6f459aa8c6282a1
 
@@ -157,7 +161,7 @@ GMP_SRC="$NDK_ADDON_SRC/gmp-${GMP_RELEASE}"
 if ! [ -d "$GMP_SRC" ] ; then
     if ! check_md5 "$GMP_TAR_PATH" "$GMP_MD5" ; then
         echo Downloading gmp $GMP_RELEASE
-        curl -o "${TARDIR}/${GMP_TAR_FILE}"  ftp://ftp.gmplib.org/pub/gmp-${GMP_RELEASE}/${GMP_TAR_FILE}
+        curl -o "${TARDIR}/${GMP_TAR_FILE}"  https://gmplib.org/download/gmp/gmp-${GMP_RELEASE}/${GMP_TAR_FILE}
         check_md5 "$GMP_TAR_PATH" "$GMP_MD5"
     fi
     (cd $NDK_ADDON_SRC; tar xf "$TARDIR/$GMP_TAR_FILE")
@@ -211,13 +215,18 @@ popd
 popd
 popd
 
+GHC_TAR_FILE=ghc-${GHC_RELEASE}.tar.xz
+GHC_TAR_PATH="${TARDIR}/${GHC_TAR_FILE}"
 if ! [ -e "$GHC_STAGE0" ] ; then
 	if [ ! -d "$GHC_STAGE0_SRC" ]; then
-    # Checkout GHC
-    wget http://www.haskell.org/ghc/dist/7.8.2/ghc-7.8.2-src.tar.bz2
-    tar xf ghc-7.8.2-src.tar.bz2
-    mv ghc-7.8.2 "$GHC_STAGE0_SRC"
-    pushd "$GHC_STAGE0_SRC" > /dev/null
+      if ! check_md5 "$GHC_TAR_PATH" "$GHC_MD5" ; then
+        echo "Downloading GHC $GHC_RELEASE"
+        curl -o "$GHC_TAR_PATH" http://www.haskell.org/ghc/dist/${GHC_RELEASE}/${GHC_TAR_FILE}
+        check_md5 "$GHC_TAR_PATH" "$GHC_MD5"
+      fi
+      tar xf ${GHC_TARFILE}
+      mv ghc-${GHC_RELEASE} "$GHC_STAGE0_SRC"
+      pushd "$GHC_STAGE0_SRC" > /dev/null
 
     # Setup build.mk
     cat > mk/build.mk <<EOF
@@ -227,7 +236,7 @@ BUILD_DOCBOOK_PS   = NO
 BUILD_DOCBOOK_PDF  = NO
 EOF
 	else
-    pushd "$GHC_STAGE0_SRC" > /dev/null
+      pushd "$GHC_STAGE0_SRC" > /dev/null
 	fi
 
     # Configure
