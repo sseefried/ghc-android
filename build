@@ -40,7 +40,7 @@ GHC_STAGE0_SRC="$BASEDIR/stage0"
 GHC_STAGE0_PREFIX="$GHCHOME/android-host"
 GHC_STAGE0="$GHC_STAGE0_PREFIX/bin/ghc"
 
-GHC_PREFIX="$NDK/sysroot/usr"
+GHC_PREFIX="$NDK"
 GHC_SRC="$NDK_ADDON_SRC/ghc"
 
 # GHC tarball
